@@ -20,6 +20,7 @@ import sys
 import logging
 
 from python_element_tree_sandbox import __version__
+import xml.etree.ElementTree as ET
 
 __author__ = "Kondo Takeo"
 __copyright__ = "Kondo Takeo"
@@ -28,21 +29,16 @@ __license__ = "mit"
 _logger = logging.getLogger(__name__)
 
 
-def fib(n):
-    """Fibonacci example function
+def create_xml():
+  """Create simple XML"""
 
-    Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
-    """
-    assert n > 0
-    a, b = 1, 1
-    for i in range(n-1):
-        a, b = b, a+b
-    return a
-
+  states = ET.Element('states')
+  ca = ET.SubElement(states, 'state', {'name':'CA'})
+  ca.text = '<Hello> world!'
+  tx = ET.SubElement(states, 'state', {'name':'TX'})
+  hi = ET.SubElement(states, 'state', {'name':'HI'})
+  sea = ET.SubElement(hi, 'beach', {'x': 'Hawaii Kai'})
+  ET.dump(states)
 
 def parse_args(args):
     """Parse command line parameters
@@ -59,11 +55,6 @@ def parse_args(args):
         "--version",
         action="version",
         version="python-element-tree-sandbox {ver}".format(ver=__version__))
-    parser.add_argument(
-        dest="n",
-        help="n-th Fibonacci number",
-        type=int,
-        metavar="INT")
     parser.add_argument(
         "-v",
         "--verbose",
@@ -101,7 +92,7 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     _logger.debug("Starting crazy calculations...")
-    print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
+    create_xml()
     _logger.info("Script ends here")
 
 
